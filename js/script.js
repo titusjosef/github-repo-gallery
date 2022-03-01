@@ -1,6 +1,7 @@
 // I am targeting the section whre my info will appear //
 const overview = document.querySelector(".overview");
 const username = "titusjosef";
+const repoList = document.querySelector(".repo-list");
 
 const gitInfo = async function () {
 
@@ -28,8 +29,24 @@ const displayUserInfo = function (data) {
 </div>`;
 
 overview.append(div);
-
 };
+
+const gitRepos = async function () {
+  const getRepos = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+  const repoData = await getRepos.json();
+  infoRepos(repoData);
+};
+
+const infoRepos = function (repos) {
+  for (const repo of repos) {
+    const repoItem = document.createElement("li");
+    repoItem.classList.add("repo");
+    repoItem.innerHTML = `<h3>${repo.name}</h3>`;
+    repoList.append(repoItem);
+  }
+};
+
+gitRepos();
 
 
 
